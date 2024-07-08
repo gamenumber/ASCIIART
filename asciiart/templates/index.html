@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASCII Art Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .image-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .image-container img {
+            max-width: 400px;
+            max-height: 400px;
+            margin: 0 20px;
+        }
+        .ascii-art {
+            font-family: monospace; /* 고정 너비 폰트 설정 */
+            font-size: 12px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            white-space: pre; /* 고정 너비로 표시 */
+            overflow-x: auto; /* 가로 스크롤바 제공 */
+        }
+        .save-button {
+            display: block;
+            margin: auto;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .save-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ASCII Art Generator</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Generate ASCII Art</button>
+        </form>
+
+        {% if original_img %}
+        <div class="image-container">
+            <img src="{{ url_for('send_uploaded_file', filename=original_img) }}" alt="Original Image">
+            {% if filtered_img %}
+            <img src="{{ url_for('send_ascii_file', filename=filtered_img) }}" alt="ASCII Art">
+            <a href="{{ url_for('save_ascii_image', filename=filtered_img) }}" class="save-button" download="ascii_art.png">Save ASCII Art as Image</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if ascii_art %}
+        <h2>Generated ASCII Art</h2>
+        <div class="ascii-art">
+            {{ ascii_art|safe }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
